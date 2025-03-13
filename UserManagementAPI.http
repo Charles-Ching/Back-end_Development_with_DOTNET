@@ -1,0 +1,45 @@
+@UserManagementAPI_HostAddress = http://localhost:5088
+
+###
+### Get token.
+GET {{UserManagementAPI_HostAddress}}/generate-token
+
+###
+### Get all users
+GET {{UserManagementAPI_HostAddress}}/api/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiVGVzdFVzZXIiLCJleHAiOjE3NDE5MDE3NDIsImlzcyI6IlRlc3RJc3N1ZXIiLCJhdWQiOiJUZXN0QXVkaWVuY2UifQ.TYO70LF_ge-fbFSraPh-Aw02ur-k40M2r8iDWzXSolk
+Accept: application/json
+
+###
+### Get a user by username
+GET {{UserManagementAPI_HostAddress}}/api/users/Ann
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiVGVzdFVzZXIiLCJleHAiOjE3NDE5MDE3NDIsImlzcyI6IlRlc3RJc3N1ZXIiLCJhdWQiOiJUZXN0QXVkaWVuY2UifQ.TYO70LF_ge-fbFSraPh-Aw02ur-k40M2r8iDWzXSolk
+Accept: application/json
+
+###
+### Create a new user
+POST {{UserManagementAPI_HostAddress}}/api/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiVGVzdFVzZXIiLCJleHAiOjE3NDE5MDE3NDIsImlzcyI6IlRlc3RJc3N1ZXIiLCJhdWQiOiJUZXN0QXVkaWVuY2UifQ.TYO70LF_ge-fbFSraPh-Aw02ur-k40M2r8iDWzXSolk
+Content-Type: application/json
+
+{
+    "username": "Ann",
+    "userAge": 66
+}
+
+###
+
+### Update a user's age
+PUT {{UserManagementAPI_HostAddress}}/api/users/Ann
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiVGVzdFVzZXIiLCJleHAiOjE3NDE5MDE3NDIsImlzcyI6IlRlc3RJc3N1ZXIiLCJhdWQiOiJUZXN0QXVkaWVuY2UifQ.TYO70LF_ge-fbFSraPh-Aw02ur-k40M2r8iDWzXSolk
+Content-Type: application/json
+
+{
+    "userAge": 67
+}
+
+###
+
+### Delete a user
+DELETE {{UserManagementAPI_HostAddress}}/api/users/Ann
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiVGVzdFVzZXIiLCJleHAiOjE3NDE5MDE3NDIsImlzcyI6IlRlc3RJc3N1ZXIiLCJhdWQiOiJUZXN0QXVkaWVuY2UifQ.TYO70LF_ge-fbFSraPh-Aw02ur-k40M2r8iDWzXSolk

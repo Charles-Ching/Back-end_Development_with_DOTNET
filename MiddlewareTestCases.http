@@ -1,0 +1,103 @@
+@UserManagementAPI_HostAddress = http://localhost:5088
+
+GET {{UserManagementAPI_HostAddress}}/generate-token
+
+###
+# 1. Test with a valid token
+GET {{UserManagementAPI_HostAddress}}/api/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiVGVzdFVzZXIiLCJleHAiOjE3NDE4Mjg1ODYsImlzcyI6IlRlc3RJc3N1ZXIiLCJhdWQiOiJUZXN0QXVkaWVuY2UifQ.Ef-7wTFEJ45DX6E0p7RqY0jhlMJ6tZOtrbAJY_gHP08
+
+# Expected:
+# - Status Code: 200 OK
+# - Middleware grants access.
+# - Logs the request and response.
+
+---
+
+###
+# 2. Test with an invalid token
+GET {{UserManagementAPI_HostAddress}}/api/users
+Authorization: Bearer INVALID_TOKEN
+Accept: application/json
+
+# Expected:
+# - Status Code: 401 Unauthorized
+# - Middleware denies access with "Invalid or expired token" response.
+# - Logs the invalid token attempt.
+
+---
+
+###
+# 3. Test without an Authorization header
+GET {{UserManagementAPI_HostAddress}}/api/users
+Accept: application/json
+
+# Expected:
+# - Status Code: 401 Unauthorized
+# - Middleware returns "Authorization header is missing."
+# - Logs the missing header and response.
+
+---
+
+###
+# 4. Trigger an unhandled exception in the application
+# Simulate an exception by requesting a non-existent endpoint.
+GET {{UserManagementAPI_HostAddress}}/api/trigger-error
+
+# Expected:
+# - Status Code: 500 Internal Server Error
+# - Middleware returns consistent JSON: { "error": "Internal server error." }
+# - Logs the exception with stack trace.
+
+---
+
+# 5. Test logging for a valid POST request
+POST {{UserManagementAPI_HostAddress}}/api/users
+Authorization: Bearer VALID_TOKEN
+Content-Type: application/json
+
+{
+  "username": "jane_doe",
+  "userAge": 25
+}
+
+# Expected:
+# - Status Code: 201 Created
+# - Middleware processes and logs the request and response data.
+# - Logs the creation of a new user.
+
+---
+
+# 6. Test logging for a POST request with invalid body
+POST {{UserManagementAPI_HostAddress}}/api/users
+Authorization: Bearer VALID_TOKEN
+Content-Type: application/json
+
+{
+  "user": "jane_doe"
+}
+
+# Expected:
+# - Status Code: 400 Bad Request
+# - Middleware responds with "Invalid JSON format."
+# - Logs the request and error response.
+
+---
+
+# 7. Test DELETE endpoint with valid token
+DELETE {{UserManagementAPI_HostAddress}}/api/users/jane_doe
+Authorization: Bearer VALID_TOKEN
+
+# Expected:
+# - Status Code: 204 No Content
+# - Middleware processes the request, deletes the user, and logs the action.
+
+---
+
+# 8. Test DELETE endpoint with invalid token
+DELETE {{UserManagementAPI_HostAddress}}/api/users/jane_doe
+Authorization: Bearer INVALID_TOKEN
+
+# Expected:
+# - Status Code: 401 Unauthorized
+# - Middleware denies access and logs the failed attempt.

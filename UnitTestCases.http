@@ -1,0 +1,141 @@
+@UserManagementAPI_HostAddress = http://localhost:5088
+
+###
+### Case 1: GET ALL users.
+### Expected Result:
+### Status Code: 200 OK
+### Response Body: List of users (empty list if no users are present).
+###
+
+GET {{UserManagementAPI_HostAddress}}/api/users
+Accept: application/json
+
+###
+### Case 2: POST new user.
+### Expected Result:
+### Status Code: 201 Created
+### {
+###  "username": "john_doe",
+###  "userAge": 30
+### }
+###
+
+POST {{UserManagementAPI_HostAddress}}/api/users
+Content-Type: application/json
+
+{
+  "username": "john_doe",
+  "userAge": 30
+}
+
+###
+
+POST {{UserManagementAPI_HostAddress}}/api/users
+Content-Type: application/json
+
+{
+  "username": "jane_smith",
+  "userAge": 50
+}
+
+###
+
+POST {{UserManagementAPI_HostAddress}}/api/users
+Content-Type: application/json
+
+{
+  "username": "jane_doe",
+  "userAge": 20
+}
+
+###
+
+POST {{UserManagementAPI_HostAddress}}/api/users
+Content-Type: application/json
+
+{
+  "username": "joe_smith",
+  "userAge": 55
+}
+
+###
+### Case 3: POST duplicate user.
+### Expected Result:
+### Status Code: 400 Bad Request
+### Response Body: Invalid input or username already exists.
+###
+
+POST {{UserManagementAPI_HostAddress}}/api/users
+Content-Type: application/json
+
+{
+  "username": "john_doe",
+  "userAge": 25
+}
+
+###
+### Case 4: GET user by user name.
+### Expected Result:
+### Status Code: 200 OK
+### Response Body:
+### {
+###  "username": "john_doe",
+###  "userAge": 30
+### }
+
+GET {{UserManagementAPI_HostAddress}}/api/users/john_doe
+Accept: application/json
+
+###
+### Case 5: GET Non-Existent User.
+### Expected Result:
+### Status Code: 404 Not Found
+### Response Body: User not found.
+###
+
+GET {{UserManagementAPI_HostAddress}}/api/users/unknown_user
+Accept: application/json
+
+###
+### Case 6: PUT user age.
+### Expected Result:
+### Status Code: 204 No Content (indicating success but no response body).
+### Use GET to verify.
+
+PUT {{UserManagementAPI_HostAddress}}/api/users/john_doe
+Content-Type: application/json
+
+{
+  "username": "john_doe",
+  "userAge": 35
+}
+
+###
+### Case 7: PUT Non-existent user.
+### Expected Result:
+### Status Code: 404 Not Found
+### Response Body: User not found.
+###
+
+PUT {{UserManagementAPI_HostAddress}}/api/users/unknown_user
+Content-Type: application/json
+
+{
+  "username": "unknown_user",
+  "userAge": 40
+}
+
+###
+### Case 8: DELETE user.
+### Expected Result:
+### Status Code: 204 No Content.
+
+DELETE {{UserManagementAPI_HostAddress}}/api/users/john_doe
+
+###
+### Case 9: DELETE non-existent user.
+### Status Code: 404 Not Found
+### Response Body: User not found.
+###
+
+DELETE {{UserManagementAPI_HostAddress}}/api/users/unknown_user
